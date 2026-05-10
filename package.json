@@ -1,0 +1,26 @@
+{
+  "name": "sistema-activos-fisei",
+  "version": "1.0.0",
+  "description": "Backend base para sistema de inventario, mantenimiento y hoja de vida de activos tecnologicos FISEI.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "frontend": "vite --host 0.0.0.0",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "lucide-react": "^1.14.0",
+    "msnodesqlv8": "^5.1.9",
+    "mssql": "^12.1.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.11"
+  }
+}
