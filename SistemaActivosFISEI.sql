@@ -7,45 +7,45 @@
     vistas y procedimientos basicos para el Sprint 1.
 */
 
-SET ANSI_NULLS ON;
-SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
 GO
 
 IF DB_ID('SistemaActivosFISEI') IS NULL
 BEGIN
-    CREATE DATABASE SistemaActivosFISEI;
+    CREATE DATABASE SistemaActivosFISEI
 END
 GO
 
-USE SistemaActivosFISEI;
+USE SistemaActivosFISEI
 GO
 
 /* Limpieza para recompilar el script durante pruebas */
-IF OBJECT_ID('dbo.usp_BuscarActivos', 'P') IS NOT NULL DROP PROCEDURE dbo.usp_BuscarActivos;
-IF OBJECT_ID('dbo.usp_RegistrarActivo', 'P') IS NOT NULL DROP PROCEDURE dbo.usp_RegistrarActivo;
-IF OBJECT_ID('dbo.usp_AsignarActivo', 'P') IS NOT NULL DROP PROCEDURE dbo.usp_AsignarActivo;
-IF OBJECT_ID('dbo.vw_InventarioActivos', 'V') IS NOT NULL DROP VIEW dbo.vw_InventarioActivos;
+IF OBJECT_ID('dbo.usp_BuscarActivos', 'P') IS NOT NULL DROP PROCEDURE dbo.usp_BuscarActivos
+IF OBJECT_ID('dbo.usp_RegistrarActivo', 'P') IS NOT NULL DROP PROCEDURE dbo.usp_RegistrarActivo
+IF OBJECT_ID('dbo.usp_AsignarActivo', 'P') IS NOT NULL DROP PROCEDURE dbo.usp_AsignarActivo
+IF OBJECT_ID('dbo.vw_InventarioActivos', 'V') IS NOT NULL DROP VIEW dbo.vw_InventarioActivos
 GO
 
-DROP TABLE IF EXISTS dbo.MantenimientoRecursos;
-DROP TABLE IF EXISTS dbo.MantenimientoActividades;
-DROP TABLE IF EXISTS dbo.Mantenimientos;
-DROP TABLE IF EXISTS dbo.TicketsMantenimiento;
-DROP TABLE IF EXISTS dbo.HistorialActivo;
-DROP TABLE IF EXISTS dbo.AsignacionesActivos;
-DROP TABLE IF EXISTS dbo.Activos;
-DROP TABLE IF EXISTS dbo.RecursosCatalogo;
-DROP TABLE IF EXISTS dbo.ActividadesCatalogo;
-DROP TABLE IF EXISTS dbo.DiagnosticosCatalogo;
-DROP TABLE IF EXISTS dbo.TiposMantenimiento;
-DROP TABLE IF EXISTS dbo.EstadosMantenimiento;
-DROP TABLE IF EXISTS dbo.EstadosTicket;
-DROP TABLE IF EXISTS dbo.EstadosActivo;
-DROP TABLE IF EXISTS dbo.TiposEquipo;
-DROP TABLE IF EXISTS dbo.Laboratorios;
-DROP TABLE IF EXISTS dbo.Responsables;
-DROP TABLE IF EXISTS dbo.Usuarios;
-DROP TABLE IF EXISTS dbo.Roles;
+IF OBJECT_ID('dbo.MantenimientoRecursos', 'U') IS NOT NULL DROP TABLE dbo.MantenimientoRecursos
+IF OBJECT_ID('dbo.MantenimientoActividades', 'U') IS NOT NULL DROP TABLE dbo.MantenimientoActividades
+IF OBJECT_ID('dbo.Mantenimientos', 'U') IS NOT NULL DROP TABLE dbo.Mantenimientos
+IF OBJECT_ID('dbo.TicketsMantenimiento', 'U') IS NOT NULL DROP TABLE dbo.TicketsMantenimiento
+IF OBJECT_ID('dbo.HistorialActivo', 'U') IS NOT NULL DROP TABLE dbo.HistorialActivo
+IF OBJECT_ID('dbo.AsignacionesActivos', 'U') IS NOT NULL DROP TABLE dbo.AsignacionesActivos
+IF OBJECT_ID('dbo.Activos', 'U') IS NOT NULL DROP TABLE dbo.Activos
+IF OBJECT_ID('dbo.RecursosCatalogo', 'U') IS NOT NULL DROP TABLE dbo.RecursosCatalogo
+IF OBJECT_ID('dbo.ActividadesCatalogo', 'U') IS NOT NULL DROP TABLE dbo.ActividadesCatalogo
+IF OBJECT_ID('dbo.DiagnosticosCatalogo', 'U') IS NOT NULL DROP TABLE dbo.DiagnosticosCatalogo
+IF OBJECT_ID('dbo.TiposMantenimiento', 'U') IS NOT NULL DROP TABLE dbo.TiposMantenimiento
+IF OBJECT_ID('dbo.EstadosMantenimiento', 'U') IS NOT NULL DROP TABLE dbo.EstadosMantenimiento
+IF OBJECT_ID('dbo.EstadosTicket', 'U') IS NOT NULL DROP TABLE dbo.EstadosTicket
+IF OBJECT_ID('dbo.EstadosActivo', 'U') IS NOT NULL DROP TABLE dbo.EstadosActivo
+IF OBJECT_ID('dbo.TiposEquipo', 'U') IS NOT NULL DROP TABLE dbo.TiposEquipo
+IF OBJECT_ID('dbo.Laboratorios', 'U') IS NOT NULL DROP TABLE dbo.Laboratorios
+IF OBJECT_ID('dbo.Responsables', 'U') IS NOT NULL DROP TABLE dbo.Responsables
+IF OBJECT_ID('dbo.Usuarios', 'U') IS NOT NULL DROP TABLE dbo.Usuarios
+IF OBJECT_ID('dbo.Roles', 'U') IS NOT NULL DROP TABLE dbo.Roles
 GO
 
 CREATE TABLE dbo.Roles (
@@ -236,9 +236,7 @@ CREATE INDEX IX_Activos_Nombre ON dbo.Activos(Nombre);
 CREATE INDEX IX_Activos_Estado ON dbo.Activos(EstadoActivoId);
 CREATE INDEX IX_Activos_TipoEquipo ON dbo.Activos(TipoEquipoId);
 CREATE INDEX IX_Activos_LaboratorioActual ON dbo.Activos(LaboratorioActualId);
-CREATE UNIQUE INDEX UX_Activos_NumeroSerie
-    ON dbo.Activos(NumeroSerie)
-    WHERE NumeroSerie IS NOT NULL;
+CREATE INDEX IX_Activos_NumeroSerie ON dbo.Activos(NumeroSerie);
 CREATE INDEX IX_Asignaciones_Activo ON dbo.AsignacionesActivos(ActivoId);
 GO
 
@@ -347,8 +345,9 @@ BEGIN
 
     IF EXISTS (SELECT 1 FROM dbo.Activos WHERE CodigoInventario = @CodigoInventario)
     BEGIN
-        THROW 50001, 'El codigo de inventario ya existe.', 1;
-    END;
+        RAISERROR('El codigo de inventario ya existe.', 16, 1)
+        RETURN
+    END
 
     INSERT INTO dbo.Activos (
         CodigoInventario, Nombre, TipoEquipoId, Marca, Modelo, NumeroSerie,
@@ -381,8 +380,9 @@ BEGIN
 
     IF NOT EXISTS (SELECT 1 FROM dbo.Activos WHERE ActivoId = @ActivoId)
     BEGIN
-        THROW 50002, 'El activo no existe.', 1;
-    END;
+        RAISERROR('El activo no existe.', 16, 1)
+        RETURN
+    END
 
     UPDATE dbo.AsignacionesActivos
     SET Activa = 0,
