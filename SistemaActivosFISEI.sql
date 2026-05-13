@@ -252,25 +252,43 @@ INSERT INTO dbo.Usuarios (RolId, Nombres, Apellidos, CorreoInstitucional, Passwo
 
 INSERT INTO dbo.Responsables (Nombres, Apellidos, Correo, Cargo) VALUES
 ('Administrador', 'Redes FISEI', 'redes.fisei@uta.edu.ec', 'Administrador de redes'),
-('Docente', 'Laboratorio', 'docente.lab@uta.edu.ec', 'Responsable de laboratorio');
+('Docente', 'Laboratorio', 'docente.lab@uta.edu.ec', 'Responsable de laboratorio'),
+('Administrador de redes', '', 'redes.fisei@uta.edu.ec', 'Administrador de redes'),
+('Docente responsable', '', NULL, 'Docente responsable'),
+('Técnico de laboratorio', '', NULL, 'Técnico de laboratorio'),
+('Coordinador de laboratorio', '', NULL, 'Coordinador de laboratorio');
 
 INSERT INTO dbo.Laboratorios (Codigo, Nombre, Ubicacion) VALUES
 ('LAB-REDES', 'Laboratorio de Redes', 'FISEI'),
 ('LAB-SW', 'Laboratorio de Software', 'FISEI'),
-('LAB-ELEC', 'Laboratorio de Electronica', 'FISEI');
+('LAB-ELEC', 'Laboratorio de Electronica', 'FISEI'),
+('LAB-01', 'Laboratorio 1', 'FISEI'),
+('LAB-02', 'Laboratorio 2', 'FISEI'),
+('LAB-03', 'Laboratorio 3', 'FISEI'),
+('CENT-COMP', 'Centro de Cómputo', 'FISEI'),
+('BODEGA', 'Bodega', 'FISEI'),
+('ADMIN', 'Administración', 'FISEI');
 
 INSERT INTO dbo.TiposEquipo (Nombre, Descripcion) VALUES
 ('Computador', 'Equipo de escritorio o portatil'),
+('Laptop', 'Equipo portatil'),
 ('Switch', 'Equipo de comunicacion de red'),
 ('Router', 'Equipo de enrutamiento'),
 ('Proyector', 'Equipo de presentacion'),
-('Impresora', 'Equipo de impresion');
+('Impresora', 'Equipo de impresion'),
+('Access Point', 'Punto de acceso inalambrico'),
+('Servidor', 'Equipo servidor de servicios institucionales'),
+('Monitor', 'Pantalla o monitor de equipo'),
+('Teclado', 'Periferico de entrada'),
+('Mouse', 'Periferico apuntador');
 
 INSERT INTO dbo.EstadosActivo (Nombre, Descripcion) VALUES
 ('Disponible', 'Activo registrado y disponible'),
 ('Asignado', 'Activo ubicado en laboratorio y con responsable'),
 ('En mantenimiento', 'Activo con revision o mantenimiento pendiente'),
-('Dado de baja', 'Activo retirado de uso sin eliminar historial');
+('Dado de baja', 'Activo retirado de uso sin eliminar historial'),
+('Dañado', 'Activo con falla reportada'),
+('Reservado', 'Activo separado para uso posterior');
 
 INSERT INTO dbo.EstadosTicket (Nombre) VALUES
 ('Abierto'),

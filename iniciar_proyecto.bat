@@ -9,6 +9,13 @@ echo ==========================================
 echo.
 echo Verificando dependencias...
 
+where npm >nul 2>nul
+if errorlevel 1 (
+    echo No se encontro npm. Instala Node.js antes de continuar.
+    pause
+    exit /b 1
+)
+
 if not exist "node_modules" (
     echo Instalando dependencias con npm install...
     call npm install
@@ -30,8 +37,14 @@ echo Iniciando frontend en http://localhost:5173
 start "Frontend - Sistema Activos FISEI" cmd /k "cd /d "%~dp0" && npm run frontend"
 
 echo.
+echo Esperando a que el frontend termine de iniciar...
+timeout /t 5 /nobreak >nul
+
+echo Abriendo navegador...
+start "" "http://localhost:5173"
+
+echo.
 echo Todo listo.
-echo Abre el navegador en:
 echo http://localhost:5173
 echo.
 echo Usuario de prueba:

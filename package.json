@@ -10,9 +10,12 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@azure/msal-browser": "^5.10.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "jwks-rsa": "^4.0.1",
     "lucide-react": "^1.14.0",
     "msnodesqlv8": "^5.1.9",
     "mssql": "^12.1.0",
